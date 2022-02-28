@@ -1,3 +1,5 @@
+![](gameplan.png)
+
 # Data analysis
 - Document here the project: GenreGuesser
 - Description: Project Description
