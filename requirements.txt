@@ -4,6 +4,10 @@ setuptools>=26
 twine
 wheel>=0.29
 
+# scraping
+selenium
+bs4
+
 # data science
 numpy
 pandas
