@@ -5,6 +5,7 @@ import pandas as pd
 import joblib
 from GenreGuesser.text_preproc import clean_text
 from GenreGuesser.data_cleaning import clean_data
+from GenreGuesser.model_select import gg_cross_val
 from GenreGuesser.pipeline import pipe
 
 
@@ -27,8 +28,9 @@ def data_prep_combined(data):
 
 if __name__ == '__main__':
     data = pd.read_csv('raw_data/data_mini.csv')
-    print(data['Genre'].unique())
+    X = data['Lyrics']
+    y = data['Genre']
     X, y = data_prep_combined(data)
-    print(y.unique())
+    cv_result = gg_cross_val(pipe, X, y)
     pipe.fit(X, y)
     joblib.dump(pipe, 'model.joblib')
