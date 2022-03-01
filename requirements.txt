@@ -21,6 +21,9 @@ flake8
 pytest
 yapf
 
+# model
+joblib
+
 # API
 gcsfs
 google-cloud-storage
