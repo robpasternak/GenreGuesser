@@ -20,11 +20,11 @@ STORAGE_LOCATION = 'models/lda_model/model.joblib'
 
 def get_data():
     """method to get the training data (or a portion of it) from google cloud bucket"""
-    df = pd.read_csv(f"gs://{BUCKET_NAME}/{BUCKET_TRAIN_DATA_PATH}", nrows=1000)
-    return df
+    data = pd.read_csv(f"gs://{BUCKET_NAME}/{BUCKET_TRAIN_DATA_PATH}", nrows=1000, dtype = 'string')
+    return data
 
-def preprocess(df):
-    text = clean_text(df['Songs'])
+def preprocess(data):
+    text = data['Songs'].apply(clean_text)
     return text
 
 def train_model(text):
@@ -72,10 +72,10 @@ def save_model(lda_model):
 
 if __name__ == '__main__':
     # get training data from GCP bucket
-    df = get_data()
+    data = get_data()
 
     # preprocess data
-    text = preprocess(df)
+    text = preprocess(data)
 
     # train model (locally if this file was called through the run_locally command
     # or on GCP if it was called through the gcp_submit_training, in which case
