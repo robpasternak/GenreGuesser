@@ -2,15 +2,16 @@
 # PIPELINE: from GenreGuesser.ML_PIPELINE import PIPELINE
 
 import pandas as pd
+import re
 import joblib
 from GenreGuesser.text_preproc import clean_text
 from GenreGuesser.data_cleaning import clean_data
-from GenreGuesser.ML_PIPELINE import PIPELINE
+#from GenreGuesser.pipeline import pipe
 
 
-from sklearn.pipeline import Pipeline
 from sklearn.pipeline import make_pipeline
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.feature_extraction.text import CountVectorizer
 
 GENRE_DICT = {
         '100' : 'rap',
@@ -22,12 +23,13 @@ GENRE_DICT = {
         }
 
 if __name__ == '__main__':
-    data = pd.read_csv('raw_data/data.csv')
+    data = pd.read_csv('raw_data/data_mini.csv')
     data = clean_data(data)
     X = data[['Lyrics']]
     y = data['Genre']
-    y_final = y.apply(lambda x : GENRE_DICT(x) if x in GENRE_DICT.keys() else x)
-    X_final = X.apply(clean_text)
-    PIPELINE = make_pipeline(KNeighborsClassifier())
-    PIPELINE.fit(X_final, y_final)
-    joblib.dump(PIPELINE, 'model.joblib')
+    y_final = y.apply(lambda x : GENRE_DICT[x] if x in GENRE_DICT.keys() else x)
+    X_final = X.copy()
+    X_final['Lyrics'] = X_final['Lyrics'].apply(clean_text)
+    pipe = make_pipeline(CountVectorizer(), KNeighborsClassifier())
+    X_final = pipe.fit_transform(X_final, y_final)
+    joblib.dump(pipe, 'model.joblib')
