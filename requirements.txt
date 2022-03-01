@@ -31,7 +31,8 @@ mlflow
 s3fs
 fastapi
 uvicorn
-
+fsspec
+gcsfs
 
 # utilities
 six>=1.14
