@@ -7,6 +7,7 @@ wheel>=0.29
 # scraping
 selenium
 bs4
+time
 
 # data science
 numpy
@@ -20,17 +21,24 @@ flake8
 pytest
 yapf
 
+# model
+joblib
+
 # API
 gcsfs
 google-cloud-storage
 mlflow
 s3fs
+fastapi
+uvicorn
+
 
 # utilities
 six>=1.14
 joblib
 memoized-property
 termcolor
+
 
 # nlp
 re

@@ -17,7 +17,7 @@ def clean_text(text):
     text = " ".join(text)
 
     #remove punctuation
-    exclude = string.punctuation + "’”“"
+    exclude = string.punctuation + "’‘”“"
     for punctuation in exclude:
            text = text.replace(punctuation, '')
 
@@ -41,9 +41,13 @@ def clean_text(text):
 
     text = ' '.join(text)
 
-    #rejoin "wan na" to "wanna"
+    #rejoin "wan na"/"gon na" to "wanna"/"gonna"
     wannas = re.findall(r"wan na", text)
+    gonnas = re.findall(r"gon na", text)
     for wanna in wannas:
         text = text.replace(wanna, "wanna")
+
+    for gonna in gonnas:
+        text = text.replace(gonna, "gonna")
 
     return text
