@@ -1,27 +1,20 @@
-from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import FunctionTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.neighbors import KNeighborsClassifier
+from GenreGuesser.text_preproc import clean_text
 
-#Create rounder for data cleaning
-rounder = FunctionTransformer()
+
+def format_func(X_in):
+    X_out = X_in.apply(clean_text)
+    return X_out
+
+#Create format_transform for data cleaning
+format_transform = FunctionTransformer(format_func)
 
 # Create Pipeline
 pipe = Pipeline([
-    ('rounder', rounder)
+    ('format_transform', format_transform),
     ('tfidf', TfidfVectorizer()),
     ('knn', KNeighborsClassifier(weights = 'distance')),
 ])
-
-# Set parameters to search
-parameters = {
-    'count__ngram_range': ((1,1), (2,2)),
-    'nb__alpha': (0.1,1)}
-
-# Perform grid search
-grid_search = GridSearchCV(pipeline, parameters, n_jobs=-1,
-                           verbose=1, scoring = "accuracy",
-                           refit=True, cv=5)
-
-grid_search.fit(data.text,y)
-
-grid_search.model

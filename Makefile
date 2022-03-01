@@ -95,7 +95,7 @@ upload_data:
 ##### Package params  - - - - - - - - - - - - - - - - - - -
 
 PACKAGE_NAME=GenreGuesser
-FILENAME=dummy_trainer
+FILENAME=training
 
 
 run_locally:
