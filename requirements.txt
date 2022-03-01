@@ -7,7 +7,7 @@ wheel>=0.29
 # scraping
 selenium
 bs4
-time
+#time
 
 # data science
 numpy
@@ -41,6 +41,6 @@ termcolor
 
 
 # nlp
-re
-string
+#re
+#string
 nltk
