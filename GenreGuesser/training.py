@@ -34,5 +34,5 @@ if __name__ == '__main__':
     #gg_grid_search(pipe, X, y)
 
     pipe.fit(X, y)
-    joblib.dump(pipe, 'model.joblib')
-    print('Model fitted and saved as model.joblib')
+    joblib.dump(pipe, 'rob_model.joblib')
+    print('Model fitted and saved as rob_model.joblib')

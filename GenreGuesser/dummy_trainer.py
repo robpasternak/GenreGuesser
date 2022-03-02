@@ -65,17 +65,17 @@ def save_model(lda_model):
     print(f"uploaded model.joblib to gcp cloud storage under \n => {STORAGE_LOCATION}")
 
 
-if __name__ == '__main__':
-    # get training data from GCP bucket
-    data = get_data()
+# if __name__ == '__main__':
+#     # get training data from GCP bucket
+#     data = get_data()
 
-    # preprocess data
-    text = preprocess(data)
+#     # preprocess data
+#     text = preprocess(data)
 
-    # train model (locally if this file was called through the run_locally command
-    # or on GCP if it was called through the gcp_submit_training, in which case
-    # this package is uploaded to GCP before being executed)
-    lda_model = train_model(text)
+#     # train model (locally if this file was called through the run_locally command
+#     # or on GCP if it was called through the gcp_submit_training, in which case
+#     # this package is uploaded to GCP before being executed)
+#     lda_model = train_model(text)
 
-    # save trained model to GCP bucket (whether the training occured locally or on GCP)
-    save_model(lda_model)
+#     # save trained model to GCP bucket (whether the training occured locally or on GCP)
+#     save_model(lda_model)

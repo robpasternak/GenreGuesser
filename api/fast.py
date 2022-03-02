@@ -16,6 +16,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+
 #add endpoint at root
 @app.get("/")
 def index():
@@ -26,19 +27,21 @@ def index():
 def predict(lyrics): #input is a string
 
     #input lyrics are X for prediction
-    X = pd.DataFrame([[lyrics]])
+    X_pred = pd.Series([lyrics])
 
     #get model from GCP
     #pipeline = get_model_from_gcp()
 
     #get model locally
-    pipeline = joblib.load('model.joblib')
+    pipeline = joblib.load('rob_model.joblib')
 
     # make prediction
-    results = pipeline.predict(X)
+    results = pipeline.predict(X_pred)
 
     # convert response here?
-    pred = results
+    pred = results[0]
 
 
-    return dict(genre=pred)
+    return {
+        'genre' : pred
+    }
