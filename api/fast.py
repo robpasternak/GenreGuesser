@@ -28,10 +28,10 @@ def predict(lyrics): #input is a string
     X = lyrics
 
     #get model from GCP
-    pipeline = get_model_from_gcp()
+    #pipeline = get_model_from_gcp()
 
     #get model locally
-    #pipeline = joblib.load('model.joblib')
+    pipeline = joblib.load('model.joblib')
 
     # make prediction
     results = pipeline.predict(X)
