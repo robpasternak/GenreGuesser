@@ -24,8 +24,10 @@ def gg_single_split_test(pipeline, X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = .3)
     pipeline.fit(X_train, y_train)
     y_pred = pipeline.predict(X_test)
+    test_accuracy = accuracy_score(y_test, y_pred)
     print('70-30 TRAIN-TEST SPLIT')
-    print(f'Accuracy: {accuracy_score(y_test, y_pred) * 100}%')
+    print(f'Accuracy: {test_accuracy * 100}%')
+    return test_accuracy
 
 
 def gg_grid_search(pipeline, X, y):
@@ -53,3 +55,4 @@ def gg_grid_search(pipeline, X, y):
     print(f"Best number of neighbors: {best_n_neighbors}")
     print(f"Best weights (uniform or distance): {best_weights}")
     print(f"Best accuracy: {best_score * 100}%")
+    return best_n_neighbors, best_weights, best_score

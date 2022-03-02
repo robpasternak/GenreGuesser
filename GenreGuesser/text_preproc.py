@@ -10,11 +10,12 @@ def clean_text(text):
     #remove headers like [Chorus] etc
     headers = re.findall(r"\[(.*?)\]", text)
     for header in headers:
-        text = text.replace(header, ' ')
+        text = text.replace(f'[{header}]', ' ')
 
     #separate lower/upper case words (like 'needHow')
-    text = re.findall('[A-Z][^A-Z]*', text)
-    text = " ".join(text)
+    cap_sep_find = r'([a-z])([A-Z])'
+    cap_sep_replace = r'\1 \2'
+    text = re.sub(cap_sep_find, cap_sep_replace, text)
 
     #remove punctuation
     exclude = string.punctuation + "’‘”“"
@@ -44,6 +45,7 @@ def clean_text(text):
     #rejoin "wan na"/"gon na" to "wanna"/"gonna"
     wannas = re.findall(r"wan na", text)
     gonnas = re.findall(r"gon na", text)
+
     for wanna in wannas:
         text = text.replace(wanna, "wanna")
 
