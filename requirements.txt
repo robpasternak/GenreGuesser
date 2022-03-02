@@ -42,3 +42,4 @@ termcolor
 
 # nlp
 nltk
+nltk.download()

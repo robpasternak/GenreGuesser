@@ -1,5 +1,6 @@
 import re
 import string
+import nltk
 string.punctuation
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
