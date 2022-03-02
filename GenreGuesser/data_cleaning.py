@@ -10,7 +10,7 @@ def clean_data(input):
     input = input.dropna()
 
     #deleting songs with mix / remix in title
-    input = input[input["Song"].str.contains("Mix|Remix")==False]
+    input = input[input["Song"].str.contains("Mix|Remix")==False].reset_index(drop=True)
 
     #spliting Artists column into a Main Artist
     input['Main_Artist'] = input['Artists'].str.split('Featuring|&')
