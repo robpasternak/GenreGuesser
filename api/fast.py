@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from GenreGuesser.gcp import get_model_from_gcp
 import joblib
 
 
@@ -26,15 +27,17 @@ def predict(lyrics): #input is a string
     #input lyrics are X for prediction
     X = lyrics
 
-    # /!\ TODO: get model from GCP
+    #get model from GCP
+    pipeline = get_model_from_gcp()
 
-    # pipeline = get_model_from_gcp()
-    pipeline = joblib.load('model.joblib')
+    #get model locally
+    #pipeline = joblib.load('model.joblib')
 
     # make prediction
     results = pipeline.predict(X)
 
-    # convert response from numpy to python type
-    pred = float(results[0])
+    # convert response here?
+    pred = results
+
 
     return dict(genre=pred)

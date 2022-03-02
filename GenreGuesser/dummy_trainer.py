@@ -10,12 +10,7 @@ string.punctuation
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
 
-BUCKET_NAME = 'lewagon-815-genre-guesser'
-BUCKET_TRAIN_DATA_PATH = 'data/rap_data.csv'
-MODEL_NAME = 'lda_model'
-MODEL_VERSION = 'v1'
-STORAGE_LOCATION = 'models/lda_model/model.joblib'
-
+from GenreGuesser.params import BUCKET_NAME, BUCKET_TRAIN_DATA_PATH, MODEL_NAME, MODEL_VERSION, STORAGE_LOCATION
 
 
 def get_data():
