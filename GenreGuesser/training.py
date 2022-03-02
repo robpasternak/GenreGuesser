@@ -9,6 +9,7 @@ from GenreGuesser.model_select import gg_single_split_test
 from GenreGuesser.model_select import gg_grid_search
 from GenreGuesser.pipeline import pipe
 
+# Dictionary for translating from MusicBrainz genre code to English
 GENRE_DICT = {
     '100' : 'rap',
     '73' : 'pop',
@@ -18,9 +19,19 @@ GENRE_DICT = {
     '62' : 'jazz'
     }
 
+# Change the following line when we get the full data:
+DATA_SOURCE = 'raw_data/data_mini.csv'
+
 if __name__ == '__main__':
-    data = pd.read_csv('raw_data/data_mini.csv')
+    # Read in the data
+    data = pd.read_csv(DATA_SOURCE)
+
+    # Remove duplicates, remixes, etc.
     data = clean_data(data)
+
+    # Set the X and y values accordingly.
+    # X values are just strings of lyrics (will be vectorized in pipeline),
+    # y values are strings indicating a genre.
     X = data['Lyrics']
     y = data['Genre'].apply(lambda x : GENRE_DICT[x] if x in GENRE_DICT.keys() else x)
 
@@ -34,5 +45,5 @@ if __name__ == '__main__':
     #gg_grid_search(pipe, X, y)
 
     pipe.fit(X, y)
-    joblib.dump(pipe, 'rob_model.joblib')
-    print('Model fitted and saved as rob_model.joblib')
+    joblib.dump(pipe, 'model.joblib')
+    print('Model fitted and saved as model.joblib')

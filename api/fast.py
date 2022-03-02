@@ -33,7 +33,7 @@ def predict(lyrics): #input is a string
     #pipeline = get_model_from_gcp()
 
     #get model locally
-    pipeline = joblib.load('rob_model.joblib')
+    pipeline = joblib.load('model.joblib')
 
     # make prediction
     results = pipeline.predict(X_pred)
