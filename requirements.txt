@@ -1,45 +1,59 @@
-# packaging
-pip>=9
-setuptools>=26
-twine
-wheel>=0.29
+# # packaging
+# pip>=9
+# setuptools>=26
+# twine
+# wheel>=0.29
 
-# scraping
-selenium
-bs4
+# # scraping
+# selenium
+# bs4
 
-# data science
-numpy
-pandas
-scikit-learn
+# # data science
+# numpy
+# pandas
+# scikit-learn
 
-# tests/linter
-black
-coverage
-flake8
-pytest
-yapf
+# # tests/linter
+# black
+# coverage
+# flake8
+# pytest
+# yapf
 
-# model
-joblib
+# # model
+# joblib
 
-# API
-gcsfs
-google-cloud-storage
-mlflow
-s3fs
-fastapi
-uvicorn
-fsspec
-gcsfs
+# # API
+# gcsfs
+# google-cloud-storage
+# mlflow
+# s3fs
+# fastapi
+# uvicorn
+# fsspec
+# gcsfs
 
-# utilities
-six>=1.14
-joblib
-memoized-property
-termcolor
+# # utilities
+# six>=1.14
+# joblib
+# memoized-property
+# termcolor
 
 
-# nlp
-nltk
-nltk.download()
+# # nlp
+# nltk
+
+
+fastapi==0.74.1
+gcsfs==2022.2.0
+ipdb==0.13.9
+jupyterlab==3.2.9
+nbdime==3.1.1
+nltk==3.7
+pip-chill==1.0.1
+pylint==2.12.2
+pytest==7.0.1
+scikit-learn==1.0.2
+seaborn==0.11.2
+termcolor==1.1.0
+uvicorn==0.17.5
