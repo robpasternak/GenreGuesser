@@ -2,6 +2,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import svm
+from sklearn.svm import SVC
 from GenreGuesser.text_preproc import clean_text
 
 def format_func(X_in):
