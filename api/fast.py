@@ -28,13 +28,14 @@ def predict(lyrics): #input is a string
 
     # /!\ TODO: get model from GCP
 
-    # pipeline = get_model_from_gcp()
-    pipeline = joblib.load('model.joblib')
+    pipeline = get_model_from_gcp()
+    #pipeline = joblib.load('model.joblib')
 
     # make prediction
     results = pipeline.predict(X)
 
     # convert response from numpy to python type
-    pred = float(results[0])
+    pred = results
+
 
     return dict(genre=pred)
