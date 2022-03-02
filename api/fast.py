@@ -1,3 +1,4 @@
+import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from GenreGuesser.gcp import get_model_from_gcp
@@ -25,7 +26,7 @@ def index():
 def predict(lyrics): #input is a string
 
     #input lyrics are X for prediction
-    X = lyrics
+    X = pd.DataFrame([[lyrics]])
 
     #get model from GCP
     #pipeline = get_model_from_gcp()
