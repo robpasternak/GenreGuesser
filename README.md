@@ -1,10 +1,10 @@
 # GenreGuesser: Guessing a Song's Genre from its Lyrics
 
 **Team (alphabetical by last name):**
-[Marc Dunker](https://github.com/Dunkerm)
-[Rob Pasternak](https://github.com/robpasternak) (project lead)
-[Jules Pastor](https://github.com/JJPPastor)
-[Julia Welchering](https://github.com/julia-welch)
+* [Marc Dunker](https://github.com/Dunkerm)
+* [Rob Pasternak](https://github.com/robpasternak) (project lead)
+* [Jules Pastor](https://github.com/JJPPastor)
+* [Julia Welchering](https://github.com/julia-welch)
 
 ### Overview
 
