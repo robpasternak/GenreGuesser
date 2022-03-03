@@ -1,3 +1,6 @@
+from GenreGuesser.pipeline import pipe
+from GenreGuesser.svm_pipe import svm_pipe
+
 ### DATA & MODEL LOCATIONS  - - - - - - - - - - - - - - - - - - -
 
 PATH_TO_LOCAL_MODEL = 'model.joblib'
@@ -21,3 +24,31 @@ MODEL_NAME = 'lda_model'
 
 # model version folder name (where the trained model.joblib file will be stored)
 MODEL_VERSION = 'v1'
+
+
+
+# Dictionary for translating from MusicBrainz genre code to English
+GENRE_DICT = {
+    '100' : 'rap',
+    100 : 'rap',
+    '73' : 'pop',
+    73 : 'pop',
+    '38' : 'country',
+    38 : 'country',
+    '114' : 'rock',
+    114 : 'rock',
+    '57' : 'folk',
+    57 : 'folk',
+    '62' : 'jazz',
+    62 : 'jazz',
+    'smooth-jazz': 'jazz',
+    }
+
+# Dictionary for command line reference to models
+MODEL_DICT = {
+    'knn' : (pipe, 'KNeighbors'),
+    'svm' : (svm_pipe, 'SVM'),
+}
+
+# Change the following line when we get the full data:
+DATA_SOURCE = 'raw_data/general_mini.csv'
