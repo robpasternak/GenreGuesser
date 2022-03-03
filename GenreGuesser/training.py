@@ -22,7 +22,8 @@ GENRE_DICT = {
     '57' : 'folk',
     57 : 'folk',
     '62' : 'jazz',
-    62 : 'jazz'
+    62 : 'jazz',
+    'smooth-jazz': 'jazz',
     }
 
 # Change the following line when we get the full data:
@@ -33,13 +34,16 @@ if __name__ == '__main__':
     data = pd.read_csv(DATA_SOURCE)
 
     # Remove duplicates, remixes, etc.
-    data = clean_data(data)
+    #data = clean_data(data)
 
     # Set the X and y values accordingly.
     # X values are just strings of lyrics (will be vectorized in pipeline),
     # y values are strings indicating a genre.
     X = data['Lyrics']
     y = data['Genre'].apply(lambda x : GENRE_DICT[x] if x in GENRE_DICT.keys() else x)
+
+    # Uncomment the following line to see how many songs from each genre in the data set
+    #print(y.value_counts())
 
     # Uncomment the following line to test with a single 70-30 split:
     #gg_single_split_test(pipe, X, y)
@@ -50,6 +54,7 @@ if __name__ == '__main__':
     # Uncomment the following line to perform a grid search (TAKES A WHILE!):
     #gg_grid_search(pipe, X, y)
 
+    pipe.set_params(verbose = True)
     pipe.fit(X, y)
     joblib.dump(pipe, 'model.joblib')
     print('Model fitted and saved as model.joblib')
