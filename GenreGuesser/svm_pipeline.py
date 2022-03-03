@@ -1,9 +1,12 @@
+#!/usr/src/env python
+
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import svm
 from sklearn.svm import SVC
-from GenreGuesser.text_preproc import clean_text
+from text_preproc import clean_text
+from gcp import save_model
 
 def format_func(X_in):
     '''
@@ -25,3 +28,6 @@ svm_pipe = Pipeline([
     ('tfidf', TfidfVectorizer()),
     ('svm', svm.SVC()),
 ])
+
+if __name__ == "__main__":
+    save_model(svm_pipe, "svm")

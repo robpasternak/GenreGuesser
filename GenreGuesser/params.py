@@ -17,7 +17,7 @@ BUCKET_TRAIN_DATA_PATH = 'data/rap_data.csv'
 ##### Model - - - - - - - - - - - - - - - - - - - - - - - -
 
 # model folder name (will contain the folders for all trained model versions)
-MODEL_NAME = 'lda_model'
+MODEL_NAME = 'model'
 
 # model version folder name (where the trained model.joblib file will be stored)
 MODEL_VERSION = 'v1'
