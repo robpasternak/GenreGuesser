@@ -15,7 +15,7 @@ def gg_cross_val(pipeline, X, y):
                                y,
                                cv = 5,
                                scoring = 'accuracy',
-                               verbose = 1)
+                               verbose = 2)
     mean_test_score = cv_result['test_score'].mean()
     mean_fit_time = cv_result['fit_time'].mean()
     print(SEP_STRING)

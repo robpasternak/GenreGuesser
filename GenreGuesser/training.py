@@ -43,13 +43,13 @@ if __name__ == '__main__':
     y = data['Genre'].apply(lambda x : GENRE_DICT[x] if x in GENRE_DICT.keys() else x)
 
     # Uncomment the following line to see how many songs from each genre in the data set
-    #print(y.value_counts())
+    print(y.value_counts())
 
     # Uncomment the following line to test with a single 70-30 split:
     #gg_single_split_test(pipe, X, y)
 
     # Uncomment the following line to test with 5-fold cross-validation:
-    #cv_result = gg_cross_val(pipe, X, y)
+    cv_result = gg_cross_val(pipe, X, y)
 
     # Uncomment the following line to perform a grid search (TAKES A WHILE!):
     #gg_grid_search(pipe, X, y)
