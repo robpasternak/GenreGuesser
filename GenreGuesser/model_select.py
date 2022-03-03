@@ -3,14 +3,22 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
 
+SEP_STRING = f'\n{"=" * 30}\n'
+
 def gg_cross_val(pipeline, X, y):
     '''
     Performs 5-fold cross-validation, prints the mean accuracy and mean
     fit time, and returns both.
     '''
-    cv_result = cross_validate(pipeline, X, y, cv = 5, scoring = 'accuracy')
+    cv_result = cross_validate(pipeline,
+                               X,
+                               y,
+                               cv = 5,
+                               scoring = 'accuracy',
+                               verbose = 1)
     mean_test_score = cv_result['test_score'].mean()
     mean_fit_time = cv_result['fit_time'].mean()
+    print(SEP_STRING)
     print('5-FOLD CROSS-VALIDATION RESULTS:')
     print(f'Mean Accuracy: {mean_test_score * 100}%')
     print(f'Mean Fit Time: {round(mean_fit_time, 3)}s')
@@ -45,13 +53,16 @@ def gg_grid_search(pipeline, X, y):
     grid = GridSearchCV(estimator = pipeline,
                         scoring = 'accuracy',
                         param_grid = param_grid,
-                        n_jobs = -1,
-                        cv = 5)
+                        #n_jobs = -1,
+                        cv = 5,
+                        verbose = 1)
     grid.fit(X,y)
     best_vals = grid.best_params_
     best_n_neighbors = best_vals['knn__n_neighbors']
     best_weights = best_vals['knn__weights']
     best_score = grid.best_score_
+    print(SEP_STRING)
+    print(f'GRID SEARCH RESULTS:')
     print(f"Best number of neighbors: {best_n_neighbors}")
     print(f"Best weights (uniform or distance): {best_weights}")
     print(f"Best accuracy: {best_score * 100}%")

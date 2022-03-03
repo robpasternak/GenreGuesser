@@ -12,15 +12,21 @@ from GenreGuesser.pipeline import pipe
 # Dictionary for translating from MusicBrainz genre code to English
 GENRE_DICT = {
     '100' : 'rap',
+    100 : 'rap',
     '73' : 'pop',
+    73 : 'pop',
     '38' : 'country',
+    38 : 'country',
     '114' : 'rock',
+    114 : 'rock',
     '57' : 'folk',
-    '62' : 'jazz'
+    57 : 'folk',
+    '62' : 'jazz',
+    62 : 'jazz'
     }
 
 # Change the following line when we get the full data:
-DATA_SOURCE = 'raw_data/data_mini.csv'
+DATA_SOURCE = 'raw_data/general_mini.csv'
 
 if __name__ == '__main__':
     # Read in the data
