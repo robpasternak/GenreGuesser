@@ -19,9 +19,9 @@ app = FastAPI()
 
 load_dotenv(find_dotenv())
 
-#credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 
-#client = storage.Client(credentials=credentials)
+#client = storage.Client(credentials=GOOGLE_APPLICATION_CREDENTIALS)
 
 
 #add middleware for frontend (Java) to communicate with backend (Python)
@@ -62,3 +62,7 @@ def predict(lyrics): #input is a string
     return {
         'genre' : pred
     }
+
+@app.get("/testing")
+def testing():
+    return credentials
