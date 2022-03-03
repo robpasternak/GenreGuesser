@@ -4,8 +4,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import KNeighborsClassifier
-from text_preproc import clean_text
-from gcp import save_model
+from GenreGuesser.text_preproc import clean_text
+#from GenreGuesser.gcp import save_model
 from termcolor import colored
 
 def format_func(X_in):
@@ -29,5 +29,5 @@ pipe = Pipeline([
     ('knn', KNeighborsClassifier(weights = 'distance')),
 ])
 
-if __name__ == "__main__":
-    save_model(pipe, "knn")
+#if __name__ == "__main__":
+#    save_model(pipe, "knn")
