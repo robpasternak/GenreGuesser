@@ -3,12 +3,16 @@ from google.cloud import storage
 import numpy as np
 import joblib
 from GenreGuesser.text_preproc import clean_text
+from GenreGuesser.data_cleaning import clean_data
 
 import pandas as pd
 import string
 string.punctuation
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
+from GenreGuesser.pipeline import pipe
+from GenreGuesser.training import GENRE_DICT
+
 
 from GenreGuesser.params import BUCKET_NAME, BUCKET_TRAIN_DATA_PATH, MODEL_NAME, MODEL_VERSION, STORAGE_LOCATION
 
@@ -19,7 +23,7 @@ def get_data():
     return data
 
 def preprocess(data):
-    text = data['Songs'].apply(clean_text)
+    text = data['Lyrics'].apply(clean_text)
     return text
 
 def train_model(text):
@@ -51,13 +55,13 @@ def upload_model_to_gcp():
     blob.upload_from_filename('model.joblib')
 
 
-def save_model(lda_model):
+def save_model(model):
     """method that saves the model into a .joblib file and uploads it on Google Storage /models folder
     HINTS : use joblib library and google-cloud-storage"""
 
     # saving the trained model to disk is mandatory to then beeing able to upload it to storage
     # Implement here
-    joblib.dump(lda_model, 'model.joblib')
+    joblib.dump(model, 'model.joblib')
     print("saved model.joblib locally")
 
     # Implement here
@@ -65,17 +69,23 @@ def save_model(lda_model):
     print(f"uploaded model.joblib to gcp cloud storage under \n => {STORAGE_LOCATION}")
 
 
-# if __name__ == '__main__':
-#     # get training data from GCP bucket
-#     data = get_data()
+if __name__ == '__main__':
+    # get training data from GCP bucket
+    data = get_data()
 
-#     # preprocess data
-#     text = preprocess(data)
+    data = clean_data(data)
 
-#     # train model (locally if this file was called through the run_locally command
-#     # or on GCP if it was called through the gcp_submit_training, in which case
-#     # this package is uploaded to GCP before being executed)
-#     lda_model = train_model(text)
 
-#     # save trained model to GCP bucket (whether the training occured locally or on GCP)
-#     save_model(lda_model)
+    # preprocess data
+    text = preprocess(data)
+
+    # train model (locally if this file was called through the run_locally command
+    # or on GCP if it was called through the gcp_submit_training, in which case
+    # this package is uploaded to GCP before being executed)
+    X = text
+    y = data['Genre'].apply(lambda x : GENRE_DICT[x] if x in GENRE_DICT.keys() else x)
+
+    model = pipe.fit(X,y)
+
+    # save trained model to GCP bucket (whether the training occured locally or on GCP)
+    save_model(model)
