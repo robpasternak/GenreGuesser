@@ -3,9 +3,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from GenreGuesser.gcp import get_model_from_gcp
 import joblib
+from google.oauth2 import service_account
 
 
 app = FastAPI()
+credentials = service_account.Credentials.from_service_account_file("/Users/julia_welch/code/julia-welch/gcp/affable-elf-337812-4c0a2ddc2c08.json")
+
 
 #add middleware for frontend (Java) to communicate with backend (Python)
 app.add_middleware(
