@@ -2,7 +2,7 @@ import os
 
 from google.cloud import storage
 from termcolor import colored
-
+import joblib
 from GenreGuesser.params import BUCKET_NAME, BUCKET_TRAIN_DATA_PATH, MODEL_NAME, MODEL_VERSION, STORAGE_LOCATION
 
 def storage_upload(rm=False):
@@ -22,3 +22,6 @@ def get_model_from_gcp():
     model_name = 'model.joblib'
     blob = client.blob(STORAGE_LOCATION)
     blob.download_to_filename('model.joblib')
+
+    pipeline = joblib.load('model.joblib')
+    return pipeline

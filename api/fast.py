@@ -14,14 +14,14 @@ from google.cloud import storage
 
 app = FastAPI()
 
-env_path = join(dirname(dirname(__file__)),'.env') # ../.env
-env_path = find_dotenv()
+#env_path = join(dirname(dirname(__file__)),'.env') # ../.env
+#env_path = find_dotenv()
 
-load_dotenv(env_path)
+load_dotenv(find_dotenv())
 
-credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+#credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
 
-client = storage.Client(project='affable-elf-337812', credentials=credentials)
+#client = storage.Client(credentials=credentials)
 
 
 #add middleware for frontend (Java) to communicate with backend (Python)
