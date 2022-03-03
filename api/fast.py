@@ -1,11 +1,28 @@
+import os
+from posixpath import dirname
 import pandas as pd
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from GenreGuesser.gcp import get_model_from_gcp
-import joblib
+from google.oauth2 import service_account
+from dotenv import load_dotenv, find_dotenv
+import os
+from os.path import join
+from google.cloud import storage
+
 
 
 app = FastAPI()
+
+#env_path = join(dirname(dirname(__file__)),'.env') # ../.env
+#env_path = find_dotenv()
+
+load_dotenv(find_dotenv())
+
+credentials = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
+
+#client = storage.Client(credentials=GOOGLE_APPLICATION_CREDENTIALS)
+
 
 #add middleware for frontend (Java) to communicate with backend (Python)
 app.add_middleware(
@@ -45,3 +62,7 @@ def predict(lyrics): #input is a string
     return {
         'genre' : pred
     }
+
+@app.get("/testing")
+def testing():
+    return credentials
