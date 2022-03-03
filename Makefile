@@ -110,3 +110,13 @@ gcp_submit_training:
 		--runtime-version=${RUNTIME_VERSION} \
 		--region ${REGION} \
 		--stream-logs
+
+# ----------------------------------
+#      Model Creation and Upload
+# ----------------------------------
+
+knn:
+	python GenreGuesser/pipeline.py
+
+svm:
+	python GenreGuesser/svm_pipe.py
