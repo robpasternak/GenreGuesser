@@ -34,6 +34,7 @@ if __name__ == '__main__':
     data = pd.read_csv(DATA_SOURCE)
 
     # Remove duplicates, remixes, etc.
+    # WILL NOT BE NECESSARY with new data scraping.
     #data = clean_data(data)
 
     # Set the X and y values accordingly.
