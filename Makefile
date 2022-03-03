@@ -111,12 +111,26 @@ gcp_submit_training:
 		--region ${REGION} \
 		--stream-logs
 
-# ----------------------------------
-#      Model Creation and Upload
-# ----------------------------------
+fit_knn:
+	@python -m ${PACKAGE_NAME}.${FILENAME} localfit knn
 
-knn:
-	python GenreGuesser/pipeline.py
+fit_svm:
+	@python -m ${PACKAGE_NAME}.${FILENAME} localfit svm
 
-svm:
-	python GenreGuesser/svm_pipe.py
+fit_all:
+	@python -m ${PACKAGE_NAME}.${FILENAME} localfit knn svm
+
+cv_knn:
+	@python -m ${PACKAGE_NAME}.${FILENAME} cross_val knn
+
+cv_svm:
+	@python -m ${PACKAGE_NAME}.${FILENAME} cross_val svm
+
+one_split_knn:
+	@python -m ${PACKAGE_NAME}.${FILENAME} one_split knn
+
+one_split_svm:
+	@python -m ${PACKAGE_NAME}.${FILENAME} one_split svm
+
+grid_knn:
+	@python -m ${PACKAGE_NAME}.${FILENAME} grid_search knn
