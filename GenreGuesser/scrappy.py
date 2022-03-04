@@ -304,9 +304,16 @@ def scrapstar(df):
 #full_df.to_csv(f'../raw_data/data.csv')
 if __name__ == '__main__':
     song_info = pd.read_csv(f'../raw_data/song_data.csv')
-    s_info = song_info[3650:8000]
+    s_info = song_info[8000:12000]
     sample_df = scrapstar(s_info)
-    sample_df.to_csv(f'../raw_data/woo.csv')
+    sample_df.to_csv(f'../raw_data/woo1.csv')
+'''
 
-    '''song_info = overlord()
-    song_info.to_csv(f'../raw_data/song_data.csv')'''
+    data1 = pd.read_csv('../raw_data/rap_pop_country_alpha.csv')
+    data2 = pd.read_csv('../raw_data/woo.csv')
+    frames = [data1, data2]
+    full_df = pd.concat(frames)
+    full_df.drop_duplicates()
+    full_df.reset_index(inplace = True)
+    full_df = full_df[['Lyrics', 'Genre']]
+    full_df.to_csv('../raw_data/updated_data.csv')'''
