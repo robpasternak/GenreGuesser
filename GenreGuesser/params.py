@@ -2,7 +2,7 @@
 
 PATH_TO_LOCAL_MODEL = 'model.joblib'
 STORAGE_LOCATION = 'models/'
-
+#lewagon-815-genre-guesser/models/knn.joblib
 ### GCP Storage - - - - - - - - - - - - - - - - - - - - - -
 
 BUCKET_NAME = 'lewagon-815-genre-guesser'

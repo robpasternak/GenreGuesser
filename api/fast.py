@@ -49,8 +49,16 @@ def predict_knn(lyrics): #input is a string
     results = pipeline.predict(X_pred)
     pred = results[0]
 
+    proba_predictions = pipeline.predict_proba(X_pred)
+    proba_classes = pipeline.classes_
+    output_dict = {}
+    for index, genre in enumerate(proba_classes):
+        output_dict[genre] = proba_predictions[0,index]
+
+
     return {
-        'genre' : pred
+        'genre' : pred,
+        'proba' : output_dict
     }
 
 #add endpoint at /predict
@@ -63,9 +71,17 @@ def predict_svm(lyrics): #input is a string
     # make prediction
     results = pipeline.predict(X_pred)
     pred = results[0]
+    #proba = pipeline.predict_proba(X_pred)
+    proba_predictions = pipeline.predict_proba(X_pred)
+    proba_classes = pipeline.classes_
+    output_dict = {}
+    for index, genre in enumerate(proba_classes):
+        output_dict[genre] = proba_predictions[0,index]
+
 
     return {
-        'genre' : pred
+        'genre' : pred,
+        'proba' : output_dict
     }
 
 @app.get("/testing")

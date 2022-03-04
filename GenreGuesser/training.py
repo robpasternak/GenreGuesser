@@ -3,19 +3,18 @@
 
 import pandas as pd
 import joblib
-from GenreGuesser.data_cleaning import clean_data
 from GenreGuesser.model_select import gg_cross_val
 from GenreGuesser.model_select import gg_single_split_test
 from GenreGuesser.model_select import gg_grid_search
-from GenreGuesser.pipeline import pipe
-from GenreGuesser.svm_pipeline import svm_pipe
+from GenreGuesser.pipeline import get_knn_pipe
+from GenreGuesser.svm_pipeline import get_svm_pipe
 from GenreGuesser.params import GENRE_DICT, DATA_SOURCE
 import sys
 
 # Dictionary for command line reference to models
 MODEL_DICT = {
-    'knn' : (pipe, 'KNeighbors'),
-    'svm' : (svm_pipe, 'SVM'),
+    'knn' : (get_knn_pipe(), 'KNeighbors'),
+    'svm' : (get_svm_pipe(), 'SVM'),
 }
 
 if __name__ == '__main__':

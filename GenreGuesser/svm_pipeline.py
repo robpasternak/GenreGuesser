@@ -6,7 +6,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import svm
 from sklearn.svm import SVC
 from GenreGuesser.text_preproc import clean_text
-#from gcp import save_model
+from GenreGuesser.gcp import save_model
 
 def format_func(X_in):
     '''
@@ -16,19 +16,20 @@ def format_func(X_in):
     X_out = X_in.apply(clean_text)
     return X_out
 
-# Create format_transform for data cleaning
-format_transform = FunctionTransformer(format_func)
-
 # Create Pipeline, which has the following three steps:
 #   - Clean text (remove things like '[VERSE 1]', lemmatize, etc.)
 #   - TF-IDF Vectorize
-#   - using svm.SVC (with probability = True to allow probabilities,
-#       and a linear kernel since that apparently works well for text
-svm_pipe = Pipeline([
-    ('format_transform', format_transform),
-    ('tfidf', TfidfVectorizer()),
-    ('svm', svm.SVC(probability = True, kernel = 'linear')),
-])
+#   - using svm.SVC
+def get_svm_pipe():
+    format_transform = FunctionTransformer(format_func)
 
-#if __name__ == "__main__":
-#    save_model(svm_pipe, "svm")
+    svm_pipe = Pipeline([
+        ('format_transform', format_transform),
+        ('tfidf', TfidfVectorizer()),
+        ('svm', svm.SVC()),
+    ])
+
+    return svm_pipe
+
+if __name__ == "__main__":
+    save_model(get_svm_pipe(), "svm")
