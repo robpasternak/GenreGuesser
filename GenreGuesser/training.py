@@ -8,7 +8,7 @@ from GenreGuesser.model_select import gg_cross_val
 from GenreGuesser.model_select import gg_single_split_test
 from GenreGuesser.model_select import gg_grid_search
 from GenreGuesser.pipeline import pipe
-from GenreGuesser.svm_pipe import svm_pipe
+from GenreGuesser.svm_pipeline import svm_pipe
 from GenreGuesser.params import GENRE_DICT, MODEL_DICT, DATA_SOURCE
 import sys
 
