@@ -4,8 +4,9 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import KNeighborsClassifier
-from text_preproc import clean_text
-from gcp import save_model
+from GenreGuesser.text_preproc import clean_text
+from GenreGuesser.gcp import save_model
+from GenreGuesser.gcp import upload_model_to_gcp
 from termcolor import colored
 
 def format_func(X_in):
