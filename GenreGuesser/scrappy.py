@@ -1,11 +1,12 @@
 from calendar import c
+from distutils.command.clean import clean
 from json.tool import main
 from selenium import webdriver
-from selenium.webdriver.support.select import Select
-from selenium.webdriver.common.action_chains import ActionChains
+'''from selenium.webdriver.support.select import Select
+from selenium.webdriver.common.action_chains import ActionChains'''
 from selenium.common.exceptions import NoSuchElementException,WebDriverException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+'''from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC'''
 from selenium.webdriver.common.by import By
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -15,8 +16,7 @@ import progressbar
 import string
 
 PATH = "/Users/julespastor/Desktop/chromedriver"
-main_driver = webdriver.Chrome(executable_path = PATH)
-driver = webdriver.Chrome(executable_path = PATH)
+
 
 
 
@@ -60,17 +60,37 @@ def scrolly(main_driver, ScrollNumber):
         time.sleep(2)
 
 def clean_song(song):
-    s = song.strip('(').strip(')').strip('?').strip('!').strip("'").strip('.').strip('[').strip(']').strip('Radio').strip('Edit')
-    print(s)
+    s = song.translate(str.maketrans('', '', string.punctuation))
+    s = s.replace(' ','-').lower()
     return s
 
+def clean_data(df):
+    '''genre data cleaning function'''
+
+    #dropping duplicates
+    input = df.drop_duplicates(subset = ['Artists', 'Song'],keep = 'first').reset_index(drop = True)
+
+    #dropping np Nans
+    input = df.dropna()
+
+    #deleting songs with mix / remix in title
+    input = df[df["Song"].str.contains("Mix|Remix")==False]
+
+    #spliting Artists column into a new Solo Artist
+    input['Main_Artist'] = df['Artists'].str.split('Featuring|&')
+    input['Main_Artist'] = input['Main_Artist'].apply(lambda x: x[0])
+
+    #selecting relevant columns
+    input = input[['Main_Artist','Artists', 'Song']]
+
+    # return df
+    return input
 
 def scrappy(main_driver, url):
     '''Scrappes the lyrics of a song on genius based on the url it is provided'''
     main_driver.get(url)
 
     time.sleep(.1)
-
 
     try:
         main_driver.find_element(By.XPATH,'//*[@id="onetrust-accept-btn-handler"]').click()
@@ -91,19 +111,20 @@ def scrappy(main_driver, url):
     except AttributeError:
         joined = None
 
-
     return joined
 
 #returns the url => url is for Genius
 def get_url(artist, song):
     '''Generates the Geniys Lyrics url based on the artist and song provided'''
     base_url = 'https://genius.com/'
-    clean_artist = artist.lower().replace(' ','-')
+    clean_artist = artist.translate(str.maketrans('', '', string.punctuation))
+    clean_artist= artist.lower().replace(' ','-')
+
     if type(song) == 'str':
-        clean_song = song.lower().replace(' ','-')
+        c_song = clean_song(song)
     else:
-        clean_song = str(song).lower().replace(' ','-')
-    url = base_url+clean_artist+'-'+clean_song+'-lyrics'
+        c_song = clean_song(str(song))
+    url = base_url+clean_artist+'-'+c_song+'-lyrics'
     return url
 
 #uses link which is for the song website
@@ -208,7 +229,7 @@ def get_wat_link(genre):
 
 def overlord():
     '''Returns the lyrics of all songs based on the genre of the link provided for both sources'''
-
+    driver = webdriver.Chrome(executable_path = PATH)
     Wat_genres = list(genres.values())
     Bill_genres = list(genres.keys())
 
@@ -245,6 +266,7 @@ def overlord():
     return df
 
 def scrapstar(df):
+    main_driver = webdriver.Chrome(executable_path = PATH)
     art = df['Main_Artist'].tolist()
     songz = df['Song'].tolist()
 
@@ -252,7 +274,7 @@ def scrapstar(df):
     widgets=[progressbar.Bar('=', '[', ']'), ' ', progressbar.Percentage()])
     bar.start()
 
-    for i in range (1, len(art)):
+    for i in range (0, len(art)):
         try :
             artist = art[i]
             song = songz[i]
@@ -261,16 +283,18 @@ def scrapstar(df):
             Lyrics.append(full_lyrics)
             bar.update(i)
         except WebDriverException:
-            pass
+            print('\n\n WebDriverException \n\n')
+            Lyrics.append(None)
     bar.finish()
 
     main_driver.close()
-    dt = {
-        'Lyrics' : Lyrics
+    genre = list(df['Genre'])
+
+    dict_df = {
+        'Lyrics' : Lyrics,
+        'Genre' : genre
     }
-    dtfr = pd.DataFrame.from_dict(dt)
-    result = pd.concat([df,dtfr],axis=1, join='inner')
-    print(result)
+    result = pd.DataFrame(data=dict_df)
     return  result
 
 
@@ -278,9 +302,11 @@ def scrapstar(df):
 '''!!!!!FOR TESTING PURPOSES ONLY!!!!!'''
 #song_info = overlord()
 #full_df.to_csv(f'../raw_data/data.csv')
-song_info = pd.read_csv(f'../raw_data/song_data.csv')
-song_info = song_info[song_info["Song"].str.contains("Mix|Remix")==False]
-s_info = song_info.head(12000)
-sample = s_info.sample(n = 100, random_state= 42)
-sample_df = scrapstar(sample)
-sample_df.to_csv(f'../raw_data/sample.csv')
+if __name__ == '__main__':
+    song_info = pd.read_csv(f'../raw_data/song_data.csv')
+    s_info = song_info[3650:8000]
+    sample_df = scrapstar(s_info)
+    sample_df.to_csv(f'../raw_data/woo.csv')
+
+    '''song_info = overlord()
+    song_info.to_csv(f'../raw_data/song_data.csv')'''

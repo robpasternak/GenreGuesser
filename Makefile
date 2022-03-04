@@ -54,6 +54,23 @@ pypi_test:
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
 
+
+
+
+APP_NAME = superduper-genre-guesser
+streamlit:
+	-@streamlit run app.py
+
+heroku_login:
+	-@heroku login
+
+heroku_create_app:
+	-@heroku create ${APP_NAME}
+
+deploy_heroku:
+	-@git push heroku master
+	-@heroku ps:scale web=1
+
 ##### Prediction API - - - - - - - - - - - - - - - - - - - - - - - - -
 
 run_api:

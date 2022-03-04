@@ -1,7 +1,7 @@
 ### DATA & MODEL LOCATIONS  - - - - - - - - - - - - - - - - - - -
 
 PATH_TO_LOCAL_MODEL = 'model.joblib'
-STORAGE_LOCATION = 'models/models/model.joblib'
+STORAGE_LOCATION = 'models/'
 
 ### GCP Storage - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,10 +17,10 @@ BUCKET_TRAIN_DATA_PATH = 'data/data_mini.csv'
 ##### Model - - - - - - - - - - - - - - - - - - - - - - - -
 
 # model folder name (will contain the folders for all trained model versions)
-MODEL_NAME = 'model'
+#MODEL_NAME = 'model'
 
 # model version folder name (where the trained model.joblib file will be stored)
-MODEL_VERSION = 'v1'
+#MODEL_VERSION = 'v1'
 
 
 
