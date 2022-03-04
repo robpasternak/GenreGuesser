@@ -1,43 +1,38 @@
 import os
-from dotenv import load_dotenv, find_dotenv
 from google.oauth2 import service_account
 from google.cloud import storage
 from termcolor import colored
 import joblib
-from GenreGuesser.params import BUCKET_NAME, BUCKET_TRAIN_DATA_PATH, MODEL_NAME, MODEL_VERSION, STORAGE_LOCATION
+from GenreGuesser.params import BUCKET_NAME, STORAGE_LOCATION
+#from dotenv import load_dotenv, find_dotenv
 
-
-load_dotenv(find_dotenv())
+#load_dotenv(find_dotenv())
 
 #credentials = os.getenv('GCP_APPLICATION_CREDENTIALS')
 credentials = service_account.Credentials.from_service_account_file('/credentials.json')
-def storage_upload(rm=False):
+def storage_upload(model_filename, rm=False):
     client = storage.Client(credentials=credentials).bucket(BUCKET_NAME)
 
-    local_model_name = 'model.joblib'
-    storage_location = f"models/{MODEL_NAME}/{MODEL_VERSION}/{local_model_name}"
+    storage_location = f"{STORAGE_LOCATION}{model_filename}"
     blob = client.blob(storage_location)
-    blob.upload_from_filename('model.joblib')
-    print(colored(f"=> model.joblib uploaded to bucket {BUCKET_NAME} inside {storage_location}",
+    blob.upload_from_filename(model_filename)
+    print(colored(f"=> {model_filename} uploaded to bucket {BUCKET_NAME} inside {storage_location}",
                   "green"))
-    if rm:
-        os.remove('model.joblib')
 
-def get_model_from_gcp():
+def get_model_from_gcp(model_filename):
 
     client = storage.Client(credentials=credentials).bucket(BUCKET_NAME)
-    model_name = 'model.joblib'
     blob = client.blob(STORAGE_LOCATION)
-    blob.download_to_filename('model.joblib')
-    pipeline = joblib.load('model.joblib')
+    blob.download_to_filename(model_filename)
+    pipeline = joblib.load(model_filename)
     return pipeline
 
-def upload_model_to_gcp():
+def upload_model_to_gcp(model_filename):
 
     client = storage.Client()
     bucket = client.bucket(BUCKET_NAME)
     blob = bucket.blob(STORAGE_LOCATION)
-    blob.upload_from_filename('model.joblib')
+    blob.upload_from_filename(model_filename)
 
 
 def save_model(model, model_name):
@@ -49,5 +44,5 @@ def save_model(model, model_name):
     print(f"saved {model_name}.joblib locally")
 
     # Implement here
-    upload_model_to_gcp()
+    upload_model_to_gcp(f'{model_name}.joblib')
     print(f"uploaded {model_name}.joblib to gcp cloud storage under \n => {STORAGE_LOCATION}")
