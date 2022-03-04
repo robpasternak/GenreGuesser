@@ -117,6 +117,12 @@ fit_knn:
 fit_svm:
 	@python -m ${PACKAGE_NAME}.${FILENAME} localfit svm
 
+fit_knn_final:
+	@python -m ${PACKAGE_NAME}.${FILENAME} finalfit knn
+
+fit_svm_final:
+	@python -m ${PACKAGE_NAME}.${FILENAME} finalfit svm
+
 fit_all:
 	@python -m ${PACKAGE_NAME}.${FILENAME} localfit knn svm
 

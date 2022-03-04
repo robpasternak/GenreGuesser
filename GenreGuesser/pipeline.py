@@ -26,7 +26,7 @@ format_transform = FunctionTransformer(format_func)
 pipe = Pipeline([
     ('format_transform', format_transform),
     ('tfidf', TfidfVectorizer()),
-    ('knn', KNeighborsClassifier(weights = 'distance')),
+    ('knn', KNeighborsClassifier(n_neighbors = 7, weights = 'uniform')),
 ])
 
 #if __name__ == "__main__":

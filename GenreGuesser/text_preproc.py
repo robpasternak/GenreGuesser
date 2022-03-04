@@ -1,10 +1,10 @@
 import re
 import string
 import nltk
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('wordnet')
-nltk.download('omw-1.4')
+nltk.download('stopwords', quiet = True)
+nltk.download('punkt', quiet = True)
+nltk.download('wordnet', quiet = True)
+nltk.download('omw-1.4', quiet = True)
 from nltk.corpus import stopwords
 
 from nltk.tokenize import word_tokenize

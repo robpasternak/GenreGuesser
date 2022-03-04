@@ -22,11 +22,12 @@ format_transform = FunctionTransformer(format_func)
 # Create Pipeline, which has the following three steps:
 #   - Clean text (remove things like '[VERSE 1]', lemmatize, etc.)
 #   - TF-IDF Vectorize
-#   - using svm.SVC
+#   - using svm.SVC (with probability = True to allow probabilities,
+#       and a linear kernel since that apparently works well for text
 svm_pipe = Pipeline([
     ('format_transform', format_transform),
     ('tfidf', TfidfVectorizer()),
-    ('svm', svm.SVC()),
+    ('svm', svm.SVC(probability = True, kernel = 'linear')),
 ])
 
 #if __name__ == "__main__":

@@ -32,23 +32,39 @@ if __name__ == '__main__':
     y = data['Genre'].apply(lambda x : GENRE_DICT[x] if x in GENRE_DICT.keys() else x)
 
     # Uncomment the following line to see how many songs from each genre in the data set
-    print(y.value_counts())
+    #print(y.value_counts())
+
+    # Uncomment the following line to see the proportion of songs from each genre in the
+    # data set
+    #print(y.value_counts(normalize = True))
 
     if sys_args[0] == 'localfit':
+        '''Locally fits the designated model(s)'''
         for sys_arg in sys_args[1:]:
             MODEL_DICT[sys_arg][0].set_params(verbose = True)
             MODEL_DICT[sys_arg][0].fit(X,y)
-            joblib.dump(MODEL_DICT[sys_arg][0], f"{sys_arg}_model.joblib")
-            print(f"{MODEL_DICT[sys_arg][1]} model fitted and saved as {sys_arg}_model.joblib")
+            joblib.dump(MODEL_DICT[sys_arg][0], f"{sys_arg}.joblib")
+            print(f"{MODEL_DICT[sys_arg][1]} model fitted and saved as {sys_arg}.joblib")
+
+    if sys_args[0] == 'finalfit':
+        '''Locally fits the designated model(s)'''
+        final_model = sys_args[1]
+        MODEL_DICT[final_model][0].set_params(verbose = True)
+        MODEL_DICT[final_model][0].fit(X,y)
+        joblib.dump(MODEL_DICT[final_model][0], "model.joblib")
+        print(f"Final, {MODEL_DICT[final_model][1]} model fitted and saved as model.joblib")
 
     if sys_args[0] == 'cross_val':
+        '''Performs a local 5-fold cross-validation for the designated model(s)'''
         for sys_arg in sys_args[1:]:
             cv_result = gg_cross_val(MODEL_DICT[sys_arg][0], X, y, MODEL_DICT[sys_arg][1])
 
     if sys_args[0] == 'one_split':
+        '''Performs a one-shot 70-30 test for the designated model(s)'''
         for sys_arg in sys_args[1:]:
             cv_result = gg_single_split_test(MODEL_DICT[sys_arg][0], X, y, MODEL_DICT[sys_arg][1])
 
     if sys_args[0] == 'grid_search':
+        '''Performs a grid search for the designated model(s)'''
         for sys_arg in sys_args[1:]:
             gg_grid_search(MODEL_DICT[sys_arg][0], X, y, sys_arg, MODEL_DICT[sys_arg][1])
