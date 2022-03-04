@@ -1,74 +1,82 @@
-# Data analysis
-- Document here the project: GenreGuesser
-- Description: Project Description
-- Data Source:
-- Type of analysis:
+# GenreGuesser: Guessing a Song's Genre from its Lyrics
 
-Please document the project the better you can.
+**Team (alphabetical by last name):**
+* [Marc Dunker](https://github.com/Dunkerm)
+* [Rob Pasternak](https://github.com/robpasternak) (project lead)
+* [Jules Pastor](https://github.com/JJPPastor)
+* [Julia Welchering](https://github.com/julia-welch)
 
-# Startup the project
+## Overview
 
-The initial setup.
+- Different genres of music have differing tendencies with respect to their lyrical content.
+    * Stereotypes: country songs are about trucks, freedom, and America, while pop songs are about romance, etc.
+- **GenreGuesser** is a machine-learning classification algorithm trained on the lyrics of thousands of songs, which takes a string of lyrics and returns a predicted genre (along with probabilities for each genre in its domain of possibilities).
+- The model will be trained locally but hosted on the cloud, with an API that will be accessed by a user-friendly app hosted on Heroku.
 
-Create virtualenv and install the project:
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv ~/venv ; source ~/venv/bin/activate ;\
-    pip install pip -U; pip install -r requirements.txt
-```
+![productdiagram](productdiagram.png)
 
-Unittest test:
-```bash
-make clean install test
-```
+## Description (Current State)
 
-Check for GenreGuesser in gitlab.com/{group}.
-If your project is not set please add it:
+### Front End
 
-- Create a new project on `gitlab.com/{group}/GenreGuesser`
-- Then populate it:
+- Hosted on Heroku, developed on Streamlit
+- Textbox requesting a single song's lyrics; upon entering the lyrics the app will show:
+    1. The predicted genre
+    2. The probabilities assigned to each genre of those the model is trained on
 
-```bash
-##   e.g. if group is "{group}" and project_name is "GenreGuesser"
-git remote add origin git@github.com:{group}/GenreGuesser.git
-git push -u origin master
-git push -u origin --tags
-```
+### Back End
 
-Functionnal test with a script:
+- Modelling pipeline trained locally:
+    * Data scraped from [Genius.com](https://www.genius.com), using song metadata scraped from [Dave Tompkins's Music Database](https://cs.uwaterloo.ca/~dtompkin/music/) and the [Billboard](https://www.billboard.com/charts/hot-100/).
+    * Initial genres: **Country**, **Folk**, **Jazz**, **Pop**, **Rap**, **Rock**
+    * Data cleaned and vectorized for a bag-of-words model using term frequency-inverse document frequency (TF-IDF)
+    * Result is fed to a *k-nearest neighbors* model (current settings: 5 neighbors, weighted by distance)
+- Model uploaded to Google Cloud Platform (GCP), where it is used to serve an API that makes predictions for new data
+- API is accessed by front end to deliver user-friendly results
 
-```bash
-cd
-mkdir tmp
-cd tmp
-GenreGuesser-run
-```
+### Brief Descriptions of Existing Modules
 
-# Install
+The current modules are described below. Italicized modules will eventually be deleted.
 
-Go to `https://github.com/{group}/GenreGuesser` to see the project, manage issues,
-setup you ssh public key, ...
+* `GenreGuesser/...`
+    * `data_cleaning.py`: code for preliminary cleaning of data (removing duplicates, remixes, blank songs, etc.)
+    * _`dummy_trainer.py`_: code for uploading a barebones model, used for refining other code before modeling could take place
+    * `gcp.py`: code for uploading model(s) to GCP
+    * `model_select.py`: code for different ways of testing models (k-fold cross-validation, 70-30 split, grid search)
+    * `params.py`: text parameters to be loaded by other modules (e.g., names of GCP buckets)
+    * `pipeline.py`: code for the _k_-neighbors machine learning pipeline
+    * `scrappy.py`: code for web scraping of lyrics
+    * `svm_pipe.py`: code for the support vector machine (SVM) machine learning pipeline
+    * `text_prepoc`: code for within-pipeline text preprocessing (e.g. lemmatization)
+    * `training.py`: unifying code that trains a model and (eventually) uploads it to GCP
+* `api/...`
+    * `fast.py`: code for serving an API on GCP which will return both a genre prediction and probabilities assigned to each genre
 
-Create a python3 virtualenv and activate it:
+## Future Plans
+### Finishing the Minimal Viable Product (MVP)
 
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv -ppython3 ~/venv ; source ~/venv/bin/activate
-```
+1. Finish obtaining the scraped data
+2. Test and train the base model locally
+    * Code for testing and training model is finished, just need data
+3. Move base model to Google Cloud
+4. Finish code to create the API, start it up
+5. Develop front end and push to Heroku
 
-Clone the project and install it:
+### Potential Extensions to the MVP
 
-```bash
-git clone git@github.com:{group}/GenreGuesser.git
-cd GenreGuesser
-pip install -r requirements.txt
-make clean install test                # install and test
-```
-Functionnal test with a script:
-
-```bash
-cd
-mkdir tmp
-cd tmp
-GenreGuesser-run
-```
+* Accumulating more data for training
+* Decisions about what genres to include/exclude
+* Improving upon the model
+    * Finetune parameters using grid search (code already in place) or random search
+    * Try different classifiers for bag-of-words
+        * support vector machine
+        * naive Bayes
+        * decision tree
+        * ensemble methods
+        * etc.
+    * Transitioning to deep learning models (requires more data)
+        * recurrent neural networks (including LSTM and GRU)
+        * convolutional neural networks
+    * Potentially intresting but beyond the scope of the project: using transformers (BERT, RoBERTa)
+* Switching to cloud-based training over local (especially useful for more complex deep learning models)
+* Improving the app, possibly by switching from Streamlit to a more customizable format
