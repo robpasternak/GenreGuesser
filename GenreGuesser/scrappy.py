@@ -284,6 +284,7 @@ def scrapstar(df):
             bar.update(i)
         except WebDriverException:
             print('\n\n WebDriverException \n\n')
+            Lyrics.append(None)
     bar.finish()
 
     main_driver.close()
@@ -303,9 +304,9 @@ def scrapstar(df):
 #full_df.to_csv(f'../raw_data/data.csv')
 if __name__ == '__main__':
     song_info = pd.read_csv(f'../raw_data/song_data.csv')
-    s_info = song_info.head(3650)
+    s_info = song_info[3650:8000]
     sample_df = scrapstar(s_info)
-    sample_df.to_csv(f'../raw_data/rap_pop_country_alpha.csv')
+    sample_df.to_csv(f'../raw_data/woo.csv')
 
     '''song_info = overlord()
     song_info.to_csv(f'../raw_data/song_data.csv')'''

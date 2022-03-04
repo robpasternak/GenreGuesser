@@ -56,6 +56,7 @@ pypi:
 
 
 
+APP_NAME = superduper-genre-guesser
 streamlit:
 	-@streamlit run app.py
 
