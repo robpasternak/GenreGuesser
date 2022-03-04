@@ -40,6 +40,7 @@ def gg_single_split_test(pipeline, X, y, name):
 
 def gg_grid_search(pipeline, X, y, short_name, long_name):
     '''
+    grid search knn:
     Performs a grid search with every possible number of neighbors from
     3 to 7 (inclusive), and with both uniform and distance-based weighting.
     TAKES A WHILE!
@@ -52,6 +53,26 @@ def gg_grid_search(pipeline, X, y, short_name, long_name):
             'knn__n_neighbors' : n_neighbors_values,
             'knn__weights' : weights_values
         }
+    '''
+    grid search svm:
+    Performs a grid search with the penalty parameter C, gamma (kernel coefficient), degree (polynomial kernel function), kernel (kernel type in algorithm) with the
+    the probability true.
+    '''
+
+    if short_name == 'svm':
+        C = [.0001, .001, .01]
+        gamma = [.0001, .001, .01, .1, 1, 10, 100]
+        degree = [1, 2, 3, 4, 5]
+        kernel = ['linear', 'rbf', 'poly']
+        probability = [True]
+
+        param_grid = {
+            'svm_C': C,
+            'svm_kernel': kernel,
+            'svm_gamma': gamma,
+            'svm_degree': degree,
+            'svm_probability': probability
+             }
 
     grid = GridSearchCV(estimator = pipeline,
                         scoring = 'accuracy',
@@ -72,3 +93,20 @@ def gg_grid_search(pipeline, X, y, short_name, long_name):
         print(f"Best weights (uniform or distance): {best_weights}")
         print(f"Best accuracy: {best_score * 100}%")
         return best_n_neighbors, best_weights, best_score
+
+    if short_name == 'svm':
+        best_C = best_vals['svm_C']
+        best_kernel = best_vals['svm_kernel']
+        best_gamma = best_vals['svm_gamma']
+        best_degree = best_vals['svm_degree']
+        best_probability = best_vals['svm_probability']
+        best_score = grid.best_score_
+        print(SEP_STRING)
+        print(f'GRID SEARCH RESULTS, {long_name}:')
+        print(f"Best penalty parameter C: {best_C}")
+        print(f"Best kernel: {best_kernel}")
+        print(f"Best gamma: {best_gamma}")
+        print(f"Best degree: {best_degree}")
+        print(f"Best probability: {best_probability}")
+        print(f"Best accuracy: {best_score * 100}%")
+        return best_C, best_kernel, best_gamma, best_degree, best_probability, best_score
