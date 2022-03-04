@@ -4,8 +4,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import KNeighborsClassifier
-from text_preproc import clean_text
-from gcp import save_model
+from GenreGuesser.text_preproc import clean_text
+#from GenreGuesser.gcp import save_model
 from termcolor import colored
 
 def format_func(X_in):
@@ -26,8 +26,8 @@ format_transform = FunctionTransformer(format_func)
 pipe = Pipeline([
     ('format_transform', format_transform),
     ('tfidf', TfidfVectorizer()),
-    ('knn', KNeighborsClassifier(weights = 'distance')),
+    ('knn', KNeighborsClassifier(n_neighbors = 7, weights = 'uniform')),
 ])
 
-if __name__ == "__main__":
-    save_model(pipe, "knn")
+#if __name__ == "__main__":
+#    save_model(pipe, "knn")

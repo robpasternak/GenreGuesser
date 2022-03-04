@@ -1,6 +1,3 @@
-from GenreGuesser.pipeline import pipe
-from GenreGuesser.svm_pipeline import svm_pipe
-
 ### DATA & MODEL LOCATIONS  - - - - - - - - - - - - - - - - - - -
 
 PATH_TO_LOCAL_MODEL = 'model.joblib'
@@ -44,11 +41,5 @@ GENRE_DICT = {
     'smooth-jazz': 'jazz',
     }
 
-# Dictionary for command line reference to models
-MODEL_DICT = {
-    'knn' : (pipe, 'KNeighbors'),
-    'svm' : (svm_pipe, 'SVM'),
-}
-
 # Change the following line when we get the full data:
-DATA_SOURCE = 'raw_data/general_mini.csv'
+DATA_SOURCE = 'raw_data/rpc_mini.csv'
