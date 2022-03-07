@@ -3,7 +3,6 @@ from sklearn.preprocessing import FunctionTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neighbors import KNeighborsClassifier
 from GenreGuesser.text_preproc import clean_text
-from GenreGuesser.gcp import save_model
 
 
 def format_func(X_in):
@@ -27,7 +26,3 @@ def get_knn_pipe():
     ])
 
     return knn_pipe
-
-
-if __name__ == "__main__":
-    save_model(get_knn_pipe(), "knn")
