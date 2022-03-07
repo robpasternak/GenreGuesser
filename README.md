@@ -80,3 +80,43 @@ The current modules are described below. Italicized modules will eventually be d
     * Potentially intresting but beyond the scope of the project: using transformers (BERT, RoBERTa)
 * Switching to cloud-based training over local (especially useful for more complex deep learning models)
 * Improving the app, possibly by switching from Streamlit to a more customizable format
+
+
+## Instructions
+
+### How to Add a New Pipeline
+
+To add a new pipeline, you'll need to come up with a `SHORTNAME` and a `LONGNAME`, both strings. The choice of `LONGNAME` doesn't really matter, since it just affects what the command line will say when it updates you on the progress of, say, model saving (e.g., ``KNeighbors``). The choice of ``SHORTNAME`` **DOES** matter, as it determines the name of the `.joblib` file and various other stuff, so choose that wisely. I recommend a short, all-lower-case name: for the KNeighbors model we've used `knn`, for SVM we've used `'svm'`, etc. From now on I use `SHORTNAME` to indicate the short name **WITHOUT** quotation marks, and `'SHORTNAME'` for the name **WITH** quotation marks (likewise for `LONGNAME`).
+
+With this in mind, let's proceed!
+
+1. Within the `GenreGuesser` directory, copy the `pipeline.py` file as `SHORTNAME_pipeline.py`.
+2. If it's there, make sure to delete any mentions of the function `save_model`, since that function doesn't work and will cause an error. This includes any import statement (`from GenreGuesser.gcp import save_model`) and the `if __name__ == "main"` bit (if it's there), both of which are not necessary.
+2. Change the name of the function `get_knn_pipe()` to `get_SHORTNAME_pipe()`, and modify the function so that it returns the type of pipeline you'd like to work with. (Make sure to include sklearn/tflow imports for your models!)
+4. Open `training.py`.
+5. Add the following line to the import statement: `from GenreGuesser.SHORTNAME_pipeline import get_SHORTNAME_pipe`
+6. Add the following line to the dictionary `MODEL_DICT` (with the comma, since that'll make adding further lines easier):
+```
+'SHORTNAME' : (get_SHORTNAME_pipe(), 'LONGNAME'),
+```
+7. Switch to the `Makefile`
+8. Add the following lines to the `Makefile`, making sure the indent is an actual indent and not just a sequence of spaces:
+```
+fit_SHORTNAME:
+	@python -m ${PACKAGE_NAME}.${FILENAME} localfit SHORTNAME
+```
+and
+```
+cv_SHORTNAME:
+	@python -m ${PACKAGE_NAME}.${FILENAME} cross_val SHORTNAME
+```
+and
+```
+one_split_SHORTNAME:
+	@python -m ${PACKAGE_NAME}.${FILENAME} one_split SHORTNAME
+```
+
+
+And you're done! Now if you want to fit your model, just go to the main folder (with the `Makefile` in it) and put in the command `make fit_SHORTNAME`. This will fit your model on the data in whatever csv file is specified by the `DATA_SOURCE` variable in `params.py`, so make sure to set this correctly before doing any fitting and/or testing. Your model will then be saved (**locally**) as `SHORTNAME.joblib`, and can be uploaded to GitHub in the usual way. If you want to do a five-fold cross-validation of your pipeline, try `make cv_SHORTNAME`. You can also do a single 70-30 split test with `make one_split_SHORTNAME`.
+
+GridSearch/RandomSearch is a bit more complicated, since defining a grid search for a given model requires knowing what hyperparameters you want to play with and how you want to try them. Some possibilities include (1) just doing it manually in a Jupyter notebook (or simply IPython in your terminal) by importing your pipeline and the relevant modules, files, etc; or (2) modifying the grid search code in `model_select.py`, as well as adding a `Makefile` command of the form `grid_SHORTNAME`. I (Rob) have done this for the KNN model, since that's what I've been finetuning; hopefully there's enough there that one should be able to modify it for different pipelines with different hyperparameters. I'm of course available for questions.

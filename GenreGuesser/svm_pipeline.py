@@ -6,7 +6,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import svm
 from sklearn.svm import SVC
 from GenreGuesser.text_preproc import clean_text
-from GenreGuesser.gcp import save_model
 
 def format_func(X_in):
     '''
@@ -30,6 +29,3 @@ def get_svm_pipe():
     ])
 
     return svm_pipe
-
-if __name__ == "__main__":
-    save_model(get_svm_pipe(), "svm")
