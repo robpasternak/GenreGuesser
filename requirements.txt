@@ -1,49 +1,3 @@
-# # packaging
-# pip>=9
-# setuptools>=26
-# twine
-# wheel>=0.29
-
-# # scraping
-# selenium
-# bs4
-
-# # data science
-# numpy
-# pandas
-# scikit-learn
-
-# # tests/linter
-# black
-# coverage
-# flake8
-# pytest
-# yapf
-
-# # model
-# joblib
-
-# # API
-# gcsfs
-# google-cloud-storage
-# mlflow
-# s3fs
-# fastapi
-# uvicorn
-# fsspec
-# gcsfs
-
-# # utilities
-# six>=1.14
-# joblib
-# memoized-property
-# termcolor
-
-
-# # nlp
-# nltk
-
-
 fastapi==0.74.1
 gcsfs==2022.2.0
 ipdb==0.13.9
@@ -59,3 +13,12 @@ termcolor==1.1.0
 uvicorn==0.17.5
 python-dotenv
 streamlit
+pandas
+google
+numpy
+joblib
+json.tools
+selenium
+bs4
+regex
+progressbar

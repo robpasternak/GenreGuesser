@@ -22,7 +22,7 @@ def storage_upload(model_filename, rm=False):
 def get_model_from_gcp(model_filename):
 
     client = storage.Client(credentials=credentials).bucket(BUCKET_NAME)
-    blob = client.blob(STORAGE_LOCATION)
+    blob = client.blob(f"{STORAGE_LOCATION}{model_filename}")
     blob.download_to_filename(model_filename)
     pipeline = joblib.load(model_filename)
     return pipeline
