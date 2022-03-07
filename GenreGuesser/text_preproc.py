@@ -25,7 +25,7 @@ def clean_text(text):
     #remove punctuation
     exclude = string.punctuation + "’‘”“"
     for punctuation in exclude:
-           text = text.replace(punctuation, '')
+           text = text.replace(punctuation, ' ')
 
     #turn text into lowercase
     text = text.lower()
@@ -50,11 +50,15 @@ def clean_text(text):
     #rejoin "wan na"/"gon na" to "wanna"/"gonna"
     wannas = re.findall(r"wan na", text)
     gonnas = re.findall(r"gon na", text)
+    gottas = re.findall(r"got ta", text)
 
     for wanna in wannas:
         text = text.replace(wanna, "wanna")
 
     for gonna in gonnas:
         text = text.replace(gonna, "gonna")
+
+    for gotta in gottas:
+        text = text.replace(gotta, "gotta")
 
     return text
