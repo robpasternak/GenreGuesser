@@ -8,6 +8,7 @@ from GenreGuesser.model_select import gg_single_split_test
 from GenreGuesser.model_select import gg_grid_search
 from GenreGuesser.pipeline import get_knn_pipe
 from GenreGuesser.svm_pipeline import get_svm_pipe
+from GenreGuesser.rfc_pipeline import get_rfc_pipe
 from GenreGuesser.params import GENRE_DICT, DATA_SOURCE
 import sys
 
@@ -15,6 +16,7 @@ import sys
 MODEL_DICT = {
     'knn' : (get_knn_pipe(), 'KNeighbors'),
     'svm' : (get_svm_pipe(), 'SVM'),
+    'rfc' : (get_rfc_pipe(), 'RFC'),
 }
 
 if __name__ == '__main__':
