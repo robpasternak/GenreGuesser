@@ -36,12 +36,12 @@ if __name__ == '__main__':
     y = data['Genre']
 
     # Uncomment the following lines to undersample pop, rock, and country to 1800
-    rus = RandomUnderSampler(sampling_strategy = {'pop' : 1800, 'country' : 1800, 'rock' : 1800}, random_state = 66)
+    rus = RandomUnderSampler(random_state = 42)
     X, y = rus.fit_resample(X,y)
     X = X['Lyrics']
 
-    # Split 90-10 into training/validation and test data (reliably with a fixed random state)
-    X_tv, X_test, y_tv, y_test = train_test_split(X, y, test_size = .15, random_state = 42)
+    # Split 80-20 into training/validation and test data (reliably with a fixed random state)
+    X_tv, X_test, y_tv, y_test = train_test_split(X, y, test_size = .2, random_state = 42)
 
     # Uncomment the following line to see how many songs from each genre are in the data set
     #print(y.value_counts())
@@ -58,11 +58,9 @@ if __name__ == '__main__':
             model_used.fit(X_tv,y_tv)
             joblib.dump(model_used, f"{sys_arg}.joblib")
             print(f"{MODEL_DICT[sys_arg][1]} model fitted and saved as {sys_arg}.joblib")
-            test_response = input('Would you like to test the model on the test data? (Y/n)\n')
-            if test_response in ['y', 'Y', '']:
-                y_pred = model_used.predict(y_test)
-                test_accuracy = accuracy_score(y_test, y_pred)
-                print(f'Accuracy: {round(test_accuracy * 100, 2)}%')
+            y_pred = model_used.predict(y_test)
+            test_accuracy = accuracy_score(y_test, y_pred)
+            print(f'Accuracy on test data: {round(test_accuracy * 100, 2)}%')
 
 
 
