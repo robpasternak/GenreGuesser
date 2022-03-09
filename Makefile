@@ -131,20 +131,29 @@ gcp_submit_training:
 fit_knn:
 	@python -m ${PACKAGE_NAME}.${FILENAME} localfit knn
 
+fit_gb:
+	@python -m ${PACKAGE_NAME}.${FILENAME} localfit gb
+
 fit_svm:
 	@python -m ${PACKAGE_NAME}.${FILENAME} localfit svm
 
 fit_knn_final:
 	@python -m ${PACKAGE_NAME}.${FILENAME} finalfit knn
 
+fit_gb_final:
+	@python -m ${PACKAGE_NAME}.${FILENAME} finalfit gb
+
 fit_svm_final:
 	@python -m ${PACKAGE_NAME}.${FILENAME} finalfit svm
 
 fit_all:
-	@python -m ${PACKAGE_NAME}.${FILENAME} localfit knn svm
+	@python -m ${PACKAGE_NAME}.${FILENAME} localfit knn svm gb
 
 cv_knn:
 	@python -m ${PACKAGE_NAME}.${FILENAME} cross_val knn
+
+cv_gb:
+	@python -m ${PACKAGE_NAME}.${FILENAME} cross_val gb
 
 cv_svm:
 	@python -m ${PACKAGE_NAME}.${FILENAME} cross_val svm
@@ -152,8 +161,14 @@ cv_svm:
 one_split_knn:
 	@python -m ${PACKAGE_NAME}.${FILENAME} one_split knn
 
+one_split_gb:
+	@python -m ${PACKAGE_NAME}.${FILENAME} one_split gb
+
 one_split_svm:
 	@python -m ${PACKAGE_NAME}.${FILENAME} one_split svm
 
 grid_knn:
 	@python -m ${PACKAGE_NAME}.${FILENAME} grid_search knn
+
+grid_gb:
+	@python -m ${PACKAGE_NAME}.${FILENAME} grid_search gb

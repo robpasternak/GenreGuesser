@@ -53,6 +53,32 @@ def gg_grid_search(pipeline, X, y, short_name, long_name):
             'knn__n_neighbors' : n_neighbors_values,
             'knn__weights' : weights_values
         }
+
+    '''
+    grid search gb:
+    Performs a grid search with....
+    '''
+
+    if short_name == 'gb':
+        n_estimators = [200, 800]
+        max_features = ['auto', 'sqrt']
+        max_depth = [10, 40]
+        max_depth.append(None)
+        min_samples_split = [10, 30, 50]
+        min_samples_leaf = [1, 2, 4]
+        learning_rate = [.1, .5]
+        subsample = [.5, 1.]
+
+        param_grid = {
+            'n_estimators': n_estimators,
+            'max_features': max_features,
+            'max_depth': max_depth,
+            'min_samples_split': min_samples_split,
+            'min_samples_leaf': min_samples_leaf,
+            'learning_rate': learning_rate,
+            'subsample': subsample
+             }
+
     '''
     grid search svm:
     Performs a grid search with the penalty parameter C, gamma (kernel coefficient), degree (polynomial kernel function), kernel (kernel type in algorithm) with the
@@ -93,6 +119,27 @@ def gg_grid_search(pipeline, X, y, short_name, long_name):
         print(f"Best weights (uniform or distance): {best_weights}")
         print(f"Best accuracy: {best_score * 100}%")
         return best_n_neighbors, best_weights, best_score
+
+    if short_name == 'gb':
+        best_n_estimators = best_vals['n_estimators']
+        best_max_features = best_vals['max_features']
+        best_max_depth = best_vals['max_depth']
+        best_min_samples_split = best_vals['min_samples_split']
+        best_min_samples_leaf = best_vals['min_samples_leaf']
+        best_min_learning_rate = best_vals['learning_rate']
+        best_min_learning_subsample = best_vals['subsample']
+        best_score = grid.best_score_
+        print(SEP_STRING)
+        print(f'GRID SEARCH RESULTS, {long_name}:')
+        print(f"Best n_estimators: {best_n_estimators}")
+        print(f"Best max_features: {best_max_features}")
+        print(f"Best max_depth: {best_max_depth}")
+        print(f"Best min_samples_split: {best_min_samples_split}")
+        print(f"Best min_samples_leaf: {best_min_samples_leaf}")
+        print(f"Best min_learning_rate: {best_min_learning_rate}")
+        print(f"Best min_learning_subsample: {best_min_learning_subsample}")
+        print(f"Best accuracy: {best_score * 100}%")
+        return best_n_estimators, best_max_features, best_max_depth, best_min_samples_split, best_min_samples_leaf, best_min_learning_rate, best_min_learning_subsample, best_score
 
     if short_name == 'svm':
         best_C = best_vals['svm_C']
