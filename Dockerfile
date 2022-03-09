@@ -4,6 +4,7 @@ COPY api /api
 COPY GenreGuesser /GenreGuesser
 COPY knn.joblib /knn.joblib
 COPY svm.joblib /svm.joblib
+COPY rfc.joblib /rfc.joblib
 COPY requirements.txt /requirements.txt
 
 RUN pip install --upgrade pip

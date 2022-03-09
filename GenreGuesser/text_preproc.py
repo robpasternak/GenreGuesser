@@ -6,11 +6,13 @@ nltk.download('punkt', quiet = True)
 nltk.download('wordnet', quiet = True)
 nltk.download('omw-1.4', quiet = True)
 from nltk.corpus import stopwords
-
+from nltk.corpus import words
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
 def clean_text(text):
+    #remove 'е'
+    text = text.replace('е', 'e')
 
     #remove headers like [Chorus] etc
     headers = re.findall(r"\[(.*?)\]", text)
@@ -45,7 +47,14 @@ def clean_text(text):
     lemmatized = [lemmatizer.lemmatize(word) for word in text]
     text = lemmatized
 
-    text = ' '.join(text)
+    #filter out non-ascii words
+    words_set = set(words.words())
+    safe_set = set(['cliché', 'rosé', 'déjà', 'ménage',  'yoncé', 'beyoncé', 'café', 'crème', 'señor', 'señorita'])
+    ascii_list = []
+    for word in text:
+        if word in words_set or word.isascii() or word in safe_set:
+            ascii_list.append(word)
+    text = ' '.join(ascii_list)
 
     #rejoin "wan na"/"gon na" to "wanna"/"gonna"
     wannas = re.findall(r"wan na", text)

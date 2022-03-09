@@ -2,6 +2,7 @@ from sklearn.model_selection import cross_validate
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import accuracy_score
+import numpy as np
 
 SEP_STRING = f'\n{"=" * 30}\n'
 
@@ -99,6 +100,29 @@ def gg_grid_search(pipeline, X, y, short_name, long_name):
             'svm_degree': degree,
             'svm_probability': probability
              }
+    '''
+    grid search rfc:
+    Performs a grid search with the n_estimators (number of trees), max_features (max number of features considered for splitting a node),
+    max_depth (max number of levels in each decision tree), min_samples_split (min number of data points placed in a node before the node is split),
+    min_samples_leaf (min number of data points allowed in a leaf node), bootstrap (method for sampling data points)
+    '''
+    if short_name == 'rfc':
+        n_estimators = [int(x) for x in np.linspace(start = 200, stop = 1000, num = 5)]
+        max_features = ['auto', 'sqrt']
+        max_depth = [int(x) for x in np.linspace(20, 100, num = 5)]
+        max_depth.append(None)
+        min_samples_split = [2, 5, 10]
+        min_samples_leaf = [1, 2, 4]
+        bootstrap = [True, False]
+        probability = [True]
+
+        param_grid = {
+            'n_estimators': n_estimators,
+            'max_features': max_features,
+            'max_depth': max_depth,
+            'min_samples_split': min_samples_split,
+            'min_samples_leaf': min_samples_leaf,
+            'bootstrap': bootstrap}
 
     grid = GridSearchCV(estimator = pipeline,
                         scoring = 'accuracy',
@@ -157,3 +181,22 @@ def gg_grid_search(pipeline, X, y, short_name, long_name):
         print(f"Best probability: {best_probability}")
         print(f"Best accuracy: {best_score * 100}%")
         return best_C, best_kernel, best_gamma, best_degree, best_probability, best_score
+
+    if short_name == 'rfc':
+        best_n_estimators = best_vals['n_estimators']
+        best_max_features = best_vals['max_features']
+        best_max_depth = best_vals['max_depth']
+        best_min_samples_split = best_vals['min_samples_split']
+        best_min_samples_leaf = best_vals['min_samples_leaf']
+        best_bootstrap = best_vals['bootstrap']
+        best_score = grid.best_score_
+        print(SEP_STRING)
+        print(f'GRID SEARCH RESULTS, {long_name}:')
+        print(f"Best n_estimators: {best_n_estimators}")
+        print(f"Best max_features: {best_max_features}")
+        print(f"Best max_depth: {best_max_depth}")
+        print(f"Best min_samples_split: {best_min_samples_split}")
+        print(f"Best min_samples_leaf: {best_min_samples_leaf}")
+        print(f"Best bootstrap: {best_bootstrap}")
+        print(f"Best accuracy: {best_score * 100}%")
+        return best_n_estimators, best_max_features, best_max_depth, best_min_samples_split, best_min_samples_leaf, best_bootstrap, best_score

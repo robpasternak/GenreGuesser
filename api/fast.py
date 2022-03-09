@@ -91,6 +91,13 @@ def predict_gb(lyrics): #input is a string
     X_pred = pd.Series([lyrics])
     #get model from GCP
     pipeline = get_model_from_gcp("gb.joblib")
+
+@app.get("/predict_rfc")
+def predict_rfc(lyrics): #input is a string
+    #input lyrics are X for prediction
+    X_pred = pd.Series([lyrics])
+    #get model from GCP
+    pipeline = get_model_from_gcp("rfc.joblib")
     # make prediction
     results = pipeline.predict(X_pred)
     pred = results[0]
@@ -106,7 +113,6 @@ def predict_gb(lyrics): #input is a string
         'genre' : pred,
         'proba' : output_dict
     }
-
 
 @app.get("/testing")
 def testing():
