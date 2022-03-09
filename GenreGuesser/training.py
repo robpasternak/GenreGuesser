@@ -10,6 +10,7 @@ from GenreGuesser.model_select import train_test_split
 from GenreGuesser.pipeline import get_knn_pipe
 from GenreGuesser.svm_pipeline import get_svm_pipe
 from GenreGuesser.rfc_pipeline import get_rfc_pipe
+from GenreGuesser.nbc_pipeline import get_nbc_pipe
 from sklearn.metrics import accuracy_score
 from GenreGuesser.params import GENRE_DICT, DATA_SOURCE
 from imblearn.under_sampling import RandomUnderSampler
@@ -20,6 +21,7 @@ MODEL_DICT = {
     'knn' : (get_knn_pipe(), 'KNeighbors'),
     'svm' : (get_svm_pipe(), 'SVM'),
     'rfc' : (get_rfc_pipe(), 'RFC'),
+    'nbc' : (get_nbc_pipe(), 'NBClass'),
 }
 
 if __name__ == '__main__':
