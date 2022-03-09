@@ -36,7 +36,7 @@ if __name__ == '__main__':
     y = data['Genre']
 
     # Uncomment the following lines to undersample pop, rock, and country to 1800
-    rus = RandomUnderSampler(sampling_strategy = {'pop' : 1800, 'country' : 1800, 'rock' : 1800})
+    rus = RandomUnderSampler(sampling_strategy = {'pop' : 1800, 'country' : 1800, 'rock' : 1800}, random_state = 66)
     X, y = rus.fit_resample(X,y)
     X = X['Lyrics']
 
