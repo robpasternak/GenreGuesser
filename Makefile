@@ -152,6 +152,9 @@ fit_svm_final:
 fit_rfc_final:
 	@python -m ${PACKAGE_NAME}.${FILENAME} finalfit rfc
 
+fit_nbc:
+	@python -m ${PACKAGE_NAME}.${FILENAME} localfit nbc
+
 fit_all:
 	@python -m ${PACKAGE_NAME}.${FILENAME} localfit knn svm gb rfc
 
@@ -167,6 +170,9 @@ cv_svm:
 cv_rfc:
 	@python -m ${PACKAGE_NAME}.${FILENAME} cross_val rfc
 
+cv_nbc:
+	@python -m ${PACKAGE_NAME}.${FILENAME} cross_val nbc
+
 one_split_knn:
 	@python -m ${PACKAGE_NAME}.${FILENAME} one_split knn
 
@@ -179,6 +185,9 @@ one_split_svm:
 one_split_rfc:
 	@python -m ${PACKAGE_NAME}.${FILENAME} one_split rfc
 
+one_split_nbc:
+	@python -m ${PACKAGE_NAME}.${FILENAME} one_split nbc
+
 grid_knn:
 	@python -m ${PACKAGE_NAME}.${FILENAME} grid_search knn
 
@@ -190,3 +199,6 @@ grid_svm:
 
 grid_rfc:
 	@python -m ${PACKAGE_NAME}.${FILENAME} grid_search rfc
+
+grid_nbc:
+	@python -m ${PACKAGE_NAME}.${FILENAME} grid_search nbc
