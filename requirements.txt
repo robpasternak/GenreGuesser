@@ -22,3 +22,4 @@ selenium
 bs4
 regex
 progressbar
+imblearn
