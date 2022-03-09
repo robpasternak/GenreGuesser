@@ -84,6 +84,29 @@ def predict_svm(lyrics): #input is a string
         'proba' : output_dict
     }
 
+#add endpoint at /predict
+@app.get("/predict_rfc")
+def predict_rfc(lyrics): #input is a string
+    #input lyrics are X for prediction
+    X_pred = pd.Series([lyrics])
+    #get model from GCP
+    pipeline = get_model_from_gcp("rfc.joblib")
+    # make prediction
+    results = pipeline.predict(X_pred)
+    pred = results[0]
+    #proba = pipeline.predict_proba(X_pred)
+    proba_predictions = pipeline.predict_proba(X_pred)
+    proba_classes = pipeline.classes_
+    output_dict = {}
+    for index, genre in enumerate(proba_classes):
+        output_dict[genre] = proba_predictions[0,index]
+
+
+    return {
+        'genre' : pred,
+        'proba' : output_dict
+    }
+
 @app.get("/testing")
 def testing():
     return credentials
