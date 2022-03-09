@@ -25,7 +25,7 @@ def get_svm_pipe():
     svm_pipe = Pipeline([
         ('format_transform', format_transform),
         ('tfidf', TfidfVectorizer()),
-        ('svm', svm.SVC()),
+        ('svm', svm.SVC(probability = True)),
     ])
 
     return svm_pipe
