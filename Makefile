@@ -154,7 +154,7 @@ fit_rfc_final:
 
 fit_all:
 	@python -m ${PACKAGE_NAME}.${FILENAME} localfit knn svm gb rfc
-  
+
 cv_knn:
 	@python -m ${PACKAGE_NAME}.${FILENAME} cross_val knn
 

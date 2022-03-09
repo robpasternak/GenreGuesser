@@ -5,6 +5,8 @@ from sklearn.preprocessing import FunctionTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
 from GenreGuesser.text_preproc import clean_text
+import nltk
+nltk.download('words')
 
 def format_func(X_in):
     '''
