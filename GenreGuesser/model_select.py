@@ -15,6 +15,7 @@ def gg_cross_val(pipeline, X, y, name):
                                X,
                                y,
                                cv = 5,
+                               n_jobs = -1,
                                scoring = 'accuracy',
                                verbose = 2)
     mean_test_score = cv_result['test_score'].mean()
