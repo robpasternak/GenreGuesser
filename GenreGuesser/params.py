@@ -42,4 +42,4 @@ GENRE_DICT = {
     }
 
 # Change the following line when we get the full data:
-DATA_SOURCE = 'raw_data/rpc_mini.csv'
+DATA_SOURCE = 'raw_data/full_df.csv'
