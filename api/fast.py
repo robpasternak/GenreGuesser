@@ -85,6 +85,13 @@ def predict_svm(lyrics): #input is a string
     }
 
 #add endpoint at /predict
+@app.get("/predict_gb")
+def predict_gb(lyrics): #input is a string
+    #input lyrics are X for prediction
+    X_pred = pd.Series([lyrics])
+    #get model from GCP
+    pipeline = get_model_from_gcp("gb.joblib")
+
 @app.get("/predict_rfc")
 def predict_rfc(lyrics): #input is a string
     #input lyrics are X for prediction
