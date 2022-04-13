@@ -13,6 +13,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 
 # For pipeline
+import joblib
 import pandas as pd
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import FunctionTransformer
@@ -20,7 +21,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.svm import SVC
 from imblearn.under_sampling import RandomUnderSampler
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import cross_validate
+from sklearn.metrics import accuracy_score
 
 
 # Dictionary for translating from MusicBrainz genre code to English
@@ -89,39 +90,18 @@ def clean_text(text):
             ascii_list.append(word)
     text = ' '.join(ascii_list)
 
-    #rejoin "wan na"/"gon na" to "wanna"/"gonna"
-    wannas = re.findall(r"wan na", text)
-    gonnas = re.findall(r"gon na", text)
-    gottas = re.findall(r"got ta", text)
-
-    for wanna in wannas:
-        text = text.replace(wanna, "wanna")
-
-    for gonna in gonnas:
-        text = text.replace(gonna, "gonna")
-
-    for gotta in gottas:
-        text = text.replace(gotta, "gotta")
+    text = text.replace('wan na', "wanna")
+    text = text.replace('gon na', "gonna")
+    text = text.replace('got ta', "gotta")
 
     return text
-
-def format_func(X_in):
-    '''
-    Transformer function that cleans text,
-    integrated as first step of pipeline
-    '''
-    X_out = X_in.apply(clean_text)
-    return X_out
 
 # Create Pipeline, which has the following three steps:
 #   - Clean text (remove things like '[VERSE 1]', lemmatize, etc.)
 #   - TF-IDF Vectorize
 #   - using svm.SVC
 def get_svm_pipe():
-    format_transform = FunctionTransformer(format_func)
-
     svm_pipe = Pipeline([
-        ('format_transform', format_transform),
         ('tfidf', TfidfVectorizer()),
         ('svm', SVC(probability = True)),
     ])
@@ -129,10 +109,12 @@ def get_svm_pipe():
     return svm_pipe
 
 if __name__ == '__main__':
+    print('Getting data')
     data = pd.read_csv(DATA_SOURCE)
     data['Genre'] = data['Genre'].apply(lambda x : GENRE_DICT[x] if x in GENRE_DICT.keys() else x)
     data = data.dropna()
     data = data[data['Genre'].isin(['rap', 'country', 'rock', 'pop'])]
+    print(data.head())
 
     X = data[['Lyrics']]
     y = data['Genre']
@@ -141,23 +123,21 @@ if __name__ == '__main__':
     rus = RandomUnderSampler(random_state = 42)
     X, y = rus.fit_resample(X,y)
     X = X['Lyrics']
+    print('Cleaning text...')
+    X = X.apply(clean_text)
+    print('Text clean.')
 
     # Split 80-20 into training/validation and test data (reliably with a fixed random state)
     X_tv, X_test, y_tv, y_test = train_test_split(X, y, test_size = .2, random_state = 42)
 
     heroku_pipe = get_svm_pipe()
+    print('Pipe obtained')
 
-    SEP_STRING = f'\n{"=" * 30}\n'
-    cv_result = cross_validate(heroku_pipe,
-                               X_tv,
-                               y_tv,
-                               cv = 5,
-                               n_jobs = -1,
-                               scoring = 'accuracy',
-                               verbose = 2)
-    mean_test_score = cv_result['test_score'].mean()
-    mean_fit_time = cv_result['fit_time'].mean()
-    print(SEP_STRING)
-    print(f'5-FOLD CROSS-VALIDATION RESULTS, SVM:')
-    print(f'Mean Accuracy: {mean_test_score * 100}%')
-    print(f'Mean Fit Time: {round(mean_fit_time, 3)}s')
+    heroku_pipe.set_params(verbose = True)
+    print('Pipe verbosity set. Now going to fit')
+    heroku_pipe.fit(X_tv,y_tv)
+    joblib.dump(heroku_pipe, "heroku.joblib")
+    print(f"SVM model fitted and saved as heroku.joblib")
+    y_pred = heroku_pipe.predict(y_test)
+    test_accuracy = accuracy_score(y_test, y_pred)
+    print(f'Accuracy on test data: {round(test_accuracy * 100, 2)}%')
